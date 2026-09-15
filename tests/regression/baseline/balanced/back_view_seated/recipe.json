@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "application_version": "0.4.0",
+  "regression_case": "back_view_seated",
+  "input": {
+    "name": "back_view_seated_cc0.jpg",
+    "sha256": "F76EE0C5D3FB5DE828287DBAE837DA7FD32E37107ECFDD2040632C1AB71F7B4B"
+  },
+  "output": {
+    "name": "result.jpg",
+    "sha256": "BCDA8FB3868763774B4740AB610528A2953DC999CAAF02867BC8F059A5677C2A"
+  },
+  "profile": "balanced",
+  "metrics": {
+    "width": 2250,
+    "height": 3000,
+    "has_people": true,
+    "person_count": 1,
+    "person_confidences": [
+      0.9959813356399536
+    ],
+    "person_area": 0.405495285987854,
+    "face_count": 0,
+    "landmark_face_count": 0,
+    "eye_area": 0.0,
+    "teeth_area": 0.0,
+    "hair_area": 0.0,
+    "global_median": 0.5652596354484558,
+    "person_median": 0.21352000534534454,
+    "background_median": 0.8276713490486145,
+    "highlight_fraction": 0.037608444444444444,
+    "shadow_fraction": 0.007338962962962963,
+    "dynamic_range": 0.9232157170772552,
+    "global_saturation": 0.10196078568696976,
+    "person_saturation": 0.1882352977991104,
+    "background_saturation": 0.03921568766236305,
+    "background_saturation_p85": 0.10196078568696976,
+    "noise": 0.0015024641275405883,
+    "sharpness": 328.3480529785156,
+    "neutral_cast_a": -1.0,
+    "neutral_cast_b": 2.0,
+    "exposure_gap": 0.61415134370327,
+    "needs_upscale": false,
+    "scene": "portrait",
+    "scene_confidence": 0.7075,
+    "scene_tags": [],
+    "scene_reasons": [
+      "detected_people=1",
+      "structural_lines=0.73"
+    ],
+    "scene_scores": {
+      "portrait": 0.7075,
+      "group": 0.0,
+      "landscape": 0.0,
+      "city": 0.22,
+      "architecture": 0.5341,
+      "indoor": 0.2564,
+      "night": 0.0,
+      "food": 0.0,
+      "animal": 0.0,
+      "object": 0.1266,
+      "general": 0.22
+    },
+    "scene_signals": {
+      "sky_fraction_top": 0.0616,
+      "vegetation_fraction": 0.0224,
+      "line_signal": 0.7333,
+      "night_signal": 0.0,
+      "animal_object_signal": 0.0,
+      "food_object_signal": 0.0,
+      "dining_object_signal": 0.0,
+      "city_object_signal": 0.0,
+      "indoor_object_signal": 0.1295
+    },
+    "detected_objects": [
+      {
+        "label": "person",
+        "confidence": 0.996,
+        "area_fraction": 0.69975
+      },
+      {
+        "label": "chair",
+        "confidence": 0.6872,
+        "area_fraction": 0.00856
+      }
+    ],
+    "faces": []
+  },
+  "decisions": {
+    "profile": "balanced",
+    "scene": "portrait",
+    "scene_confidence": 0.7075,
+    "scene_policy": {
+      "tone_scale": 1.0,
+      "denoise_scale": 1.0,
+      "sharpen_scale": 1.0,
+      "background_scale": 1.0
+    },
+    "subject_lift": 0.09,
+    "subject_gamma": 0.772207670939963,
+    "white_balance_a": 0.0,
+    "white_balance_b": 0.0,
+    "background_highlight_rolloff": 0.044000000000000004,
+    "background_saturation_reduction": 0.05,
+    "denoise_amount": 0.0,
+    "sharpen_amount": 0.0,
+    "eye_detail_amount": 0.0,
+    "hair_detail_amount": 0.0,
+    "teeth_protected": false,
+    "face_restoration_strengths": [],
+    "upscale_requested": false,
+    "render_seconds": 0.7045519999810494
+  },
+  "models": {
+    "segmentation": {
+      "capability": "person-instance-segmentation",
+      "provider": "torchvision-maskrcnn-resnet50-fpn",
+      "artifact": "maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth",
+      "version": "torchvision-0.22.0-coco-v1",
+      "sha256": "BF2D0C1EFBC936EEEE2BC95A48E80EBC86B891F61B0106485937FC29F9315FC0"
+    },
+    "face_detection": {
+      "capability": "face-detection",
+      "provider": "opencv-yunet",
+      "artifact": "face_detection_yunet_2023mar.onnx",
+      "version": "2023mar",
+      "sha256": "8F2383E4DD3CFBB4553EA8718107FC0423210DC964F9F4280604804ED2552FA4"
+    },
+    "face_restoration": null,
+    "upscale": null
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "profile": "balanced",
+  "cases": [
+    {
+      "id": "couple_outdoors",
+      "file": "couple_outdoors_public_domain.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Couple_outdoors.jpg",
+      "author": "National Cancer Institute",
+      "license": "Public domain; work of the U.S. federal government",
+      "original_sha256": "67F77E9689FE1D204443045C9E62D5B9969299DA5CF9F36016E45541CD2DADA7",
+      "stored_sha256": "67F77E9689FE1D204443045C9E62D5B9969299DA5CF9F36016E45541CD2DADA7",
+      "coverage": ["two faces", "mixed skin tones", "bright detailed background"],
+      "expect": {"scene": "portrait", "has_people": true, "min_people": 2, "min_faces": 2, "min_landmark_faces": 2, "min_person_area": 0.20, "needs_upscale": false}
+    },
+    {
+      "id": "back_view_seated",
+      "file": "back_view_seated_cc0.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Back_view_of_a_seated_person.jpg",
+      "author": "OutdoorShooter00",
+      "license": "CC0 1.0 Universal",
+      "original_sha256": "251560B53FFC3B749A063AB69AE74844B07ABD93A919BCCC218AEE24E3480FC3",
+      "stored_sha256": "F76EE0C5D3FB5DE828287DBAE837DA7FD32E37107ECFDD2040632C1AB71F7B4B",
+      "derivative": "EXIF, timestamp and GPS removed; resized to 2250 x 3000; JPEG quality 95",
+      "coverage": ["back-facing person", "no visible face", "indoor mixed light", "source GPS removal"],
+      "expect": {"scene": "portrait", "has_people": true, "min_people": 1, "max_faces": 0, "min_landmark_faces": 0, "min_person_area": 0.05, "needs_upscale": false}
+    },
+    {
+      "id": "indoor_moderator",
+      "file": "indoor_moderator_public_domain.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Health_professional_addresses_group.jpg",
+      "author": "Bill Branson / National Cancer Institute",
+      "license": "Public domain; work of the U.S. federal government",
+      "original_sha256": "A5C4664506FD946897F0DECD6F56392B8DD80164C23FE96F679AC9EFBFB70CEB",
+      "stored_sha256": "458B4CAF548FADF3582717249ABE9F8201A2E390166A1AD9267536B8036647D5",
+      "derivative": "EXIF and timestamp removed; resized to 1955 x 3000; JPEG quality 95",
+      "coverage": ["indoor portrait", "foreground occlusion", "background people", "mixed colour temperature"],
+      "expect": {"scene": "portrait", "has_people": true, "min_people": 1, "min_faces": 1, "min_landmark_faces": 1, "min_person_area": 0.08, "needs_upscale": false}
+    },
+    {
+      "id": "longfellow_group",
+      "file": "longfellow_group_public_domain.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Longfellow_group.jpg",
+      "author": "National Cancer Institute",
+      "license": "Public domain; work of the U.S. federal government",
+      "original_sha256": "532B54952ABB8041715740213CF45B6A394CF60D84549DB9671F01C763EE6EC5",
+      "stored_sha256": "89E9913838D038E2C4D6878C1FA0DD47CCB30875EC6BDB0E45E7230ECB3ECA32",
+      "derivative": "EXIF removed; resized to 700 x 464 to exercise the conditional upscale gate; JPEG quality 95",
+      "coverage": ["ten-person group", "monochrome", "small faces", "low-resolution upscale gate"],
+      "expect": {"scene": "group", "has_people": true, "min_people": 10, "min_faces": 2, "min_landmark_faces": 0, "min_person_area": 0.10, "needs_upscale": true}
+    },
+    {
+      "id": "glacier_landscape",
+      "file": "glacier_landscape_public_domain.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:National_Park_Service_(48754075203).jpg",
+      "author": "NPS Natural Resources",
+      "license": "Public domain; work of the U.S. federal government",
+      "original_sha256": "8C72F48853D0D649E2EC0BC7F72A0906F2B1585A47F346EA1BB0CEDC972BD25D",
+      "stored_sha256": "AAF0A08551299A3DFFFCDE8F0E0784C002A55FC1F5B3B2685CB32DFFCB6637F0",
+      "derivative": "EXIF, timestamp and location removed; resized to 2200 x 1467; JPEG quality 95",
+      "coverage": ["no people", "landscape", "sky", "water reflection"],
+      "expect": {"scene": "landscape", "has_people": false, "min_people": 0, "max_faces": 0, "min_landmark_faces": 0, "min_person_area": 0.0, "needs_upscale": false}
+    },
+    {
+      "id": "city_night",
+      "file": "city_night_public_domain.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:City_street_at_night.jpg",
+      "author": "Chris Spielmann / National Cancer Institute",
+      "license": "Public domain; work of the U.S. federal government",
+      "original_sha256": "C345E33BBE27A11E840D193CDC27DB52EC439B3D5A944C866923EF67226BAAD0",
+      "stored_sha256": "72BB665E1192F4B8302F49065ECABE28EFE0C24663FECCD68D8D1C9DCED183FE",
+      "derivative": "EXIF and timestamp removed; resized to 2200 x 1453; JPEG quality 95",
+      "coverage": ["city", "night", "small background people", "cars", "traffic lights"],
+      "expect": {"scene": "city", "has_people": true, "min_people": 1, "max_faces": 0, "min_landmark_faces": 0, "min_person_area": 0.005, "needs_upscale": false}
+    }
+  ]
+}

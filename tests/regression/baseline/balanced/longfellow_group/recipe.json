@@ -1,0 +1,416 @@
+{
+  "schema_version": 1,
+  "application_version": "0.4.0",
+  "regression_case": "longfellow_group",
+  "input": {
+    "name": "longfellow_group_public_domain.jpg",
+    "sha256": "89E9913838D038E2C4D6878C1FA0DD47CCB30875EC6BDB0E45E7230ECB3ECA32"
+  },
+  "output": {
+    "name": "result.jpg",
+    "sha256": "6524502500B8BF049652FE0EC80DC6A648186400B35A22A8B405AE738BC03BB2"
+  },
+  "profile": "balanced",
+  "metrics": {
+    "width": 700,
+    "height": 464,
+    "has_people": true,
+    "person_count": 10,
+    "person_confidences": [
+      0.9980985522270203,
+      0.9970017075538635,
+      0.9967907071113586,
+      0.9963711500167847,
+      0.9954481720924377,
+      0.9885991811752319,
+      0.984504222869873,
+      0.9823659062385559,
+      0.9582721590995789,
+      0.9477192163467407
+    ],
+    "person_area": 0.47863665223121643,
+    "face_count": 10,
+    "landmark_face_count": 0,
+    "eye_area": 0.0,
+    "teeth_area": 0.0,
+    "hair_area": 0.0,
+    "global_median": 0.501960813999176,
+    "person_median": 0.49803921580314636,
+    "background_median": 0.5058823823928833,
+    "highlight_fraction": 0.10028633004926109,
+    "shadow_fraction": 0.0,
+    "dynamic_range": 0.7216470456123334,
+    "global_saturation": 0.0,
+    "person_saturation": 0.0,
+    "background_saturation": 0.0,
+    "background_saturation_p85": 0.0,
+    "noise": 0.0032004023551940918,
+    "sharpness": 2998.79345703125,
+    "neutral_cast_a": 0.0,
+    "neutral_cast_b": 0.0,
+    "exposure_gap": 0.007843166589736938,
+    "needs_upscale": true,
+    "scene": "group",
+    "scene_confidence": 0.9500000000000001,
+    "scene_tags": [],
+    "scene_reasons": [
+      "detected_people=10",
+      "detected_faces=10",
+      "structural_lines=1.00"
+    ],
+    "scene_scores": {
+      "portrait": 0.9575,
+      "group": 0.95,
+      "landscape": 0.0,
+      "city": 0.3,
+      "architecture": 0.78,
+      "indoor": 0.2316,
+      "night": 0.0,
+      "food": 0.0,
+      "animal": 0.0,
+      "object": 0.1919,
+      "general": 0.22
+    },
+    "scene_signals": {
+      "sky_fraction_top": 0.0,
+      "vegetation_fraction": 0.0,
+      "line_signal": 1.0,
+      "night_signal": 0.0,
+      "animal_object_signal": 0.0,
+      "food_object_signal": 0.0,
+      "dining_object_signal": 0.0,
+      "city_object_signal": 0.0,
+      "indoor_object_signal": 0.0873
+    },
+    "detected_objects": [
+      {
+        "label": "tie",
+        "confidence": 0.9986,
+        "area_fraction": 0.01054
+      },
+      {
+        "label": "person",
+        "confidence": 0.9981,
+        "area_fraction": 0.10951
+      },
+      {
+        "label": "tie",
+        "confidence": 0.9974,
+        "area_fraction": 0.00411
+      },
+      {
+        "label": "person",
+        "confidence": 0.997,
+        "area_fraction": 0.1272
+      },
+      {
+        "label": "person",
+        "confidence": 0.9968,
+        "area_fraction": 0.1467
+      },
+      {
+        "label": "person",
+        "confidence": 0.9964,
+        "area_fraction": 0.12322
+      },
+      {
+        "label": "tie",
+        "confidence": 0.9961,
+        "area_fraction": 0.00757
+      },
+      {
+        "label": "person",
+        "confidence": 0.9954,
+        "area_fraction": 0.15285
+      },
+      {
+        "label": "tie",
+        "confidence": 0.9945,
+        "area_fraction": 0.00625
+      },
+      {
+        "label": "person",
+        "confidence": 0.9886,
+        "area_fraction": 0.06989
+      },
+      {
+        "label": "tie",
+        "confidence": 0.9882,
+        "area_fraction": 0.00207
+      },
+      {
+        "label": "person",
+        "confidence": 0.9845,
+        "area_fraction": 0.09898
+      },
+      {
+        "label": "person",
+        "confidence": 0.9824,
+        "area_fraction": 0.06174
+      },
+      {
+        "label": "tie",
+        "confidence": 0.9602,
+        "area_fraction": 0.00223
+      },
+      {
+        "label": "person",
+        "confidence": 0.9583,
+        "area_fraction": 0.07924
+      },
+      {
+        "label": "person",
+        "confidence": 0.9477,
+        "area_fraction": 0.05294
+      },
+      {
+        "label": "tie",
+        "confidence": 0.9248,
+        "area_fraction": 0.00038
+      },
+      {
+        "label": "tie",
+        "confidence": 0.7569,
+        "area_fraction": 0.00092
+      },
+      {
+        "label": "tie",
+        "confidence": 0.6703,
+        "area_fraction": 0.00445
+      },
+      {
+        "label": "book",
+        "confidence": 0.6591,
+        "area_fraction": 0.00156
+      },
+      {
+        "label": "person",
+        "confidence": 0.6515,
+        "area_fraction": 0.02285
+      },
+      {
+        "label": "tie",
+        "confidence": 0.6029,
+        "area_fraction": 0.00151
+      }
+    ],
+    "faces": [
+      {
+        "bbox": [
+          603,
+          84,
+          43,
+          55
+        ],
+        "confidence": 0.9305890798568726,
+        "brightness": 0.7764706015586853,
+        "contrast": 0.41960787773132324,
+        "sharpness": 2810.23291015625,
+        "noise": 0.008326074367761612,
+        "quality": 0.5524224321842194,
+        "landmarks_reliable": false
+      },
+      {
+        "bbox": [
+          357,
+          195,
+          45,
+          58
+        ],
+        "confidence": 0.9289758801460266,
+        "brightness": 0.801960825920105,
+        "contrast": 0.34941174387931806,
+        "sharpness": 2873.0908203125,
+        "noise": 0.006932437705993652,
+        "quality": 0.5603860702514649,
+        "landmarks_reliable": false
+      },
+      {
+        "bbox": [
+          415,
+          93,
+          36,
+          45
+        ],
+        "confidence": 0.9206576943397522,
+        "brightness": 0.7333333492279053,
+        "contrast": 0.3176470398902893,
+        "sharpness": 4035.35498046875,
+        "noise": 0.009220421397686003,
+        "quality": 0.5473118777275086,
+        "landmarks_reliable": false
+      },
+      {
+        "bbox": [
+          501,
+          179,
+          51,
+          68
+        ],
+        "confidence": 0.9192301630973816,
+        "brightness": 0.7529411911964417,
+        "contrast": 0.37647056579589844,
+        "sharpness": 3215.87255859375,
+        "noise": 0.00853688063621521,
+        "quality": 0.5512178249359131,
+        "landmarks_reliable": false
+      },
+      {
+        "bbox": [
+          51,
+          107,
+          39,
+          50
+        ],
+        "confidence": 0.9183589220046997,
+        "brightness": 0.8039215803146362,
+        "contrast": 0.3999999761581421,
+        "sharpness": 3730.38916015625,
+        "noise": 0.007664228403568268,
+        "quality": 0.556204409122467,
+        "landmarks_reliable": false
+      },
+      {
+        "bbox": [
+          185,
+          190,
+          45,
+          57
+        ],
+        "confidence": 0.9177449345588684,
+        "brightness": 0.7921568155288696,
+        "contrast": 0.3215686082839966,
+        "sharpness": 3101.68896484375,
+        "noise": 0.007462921893596649,
+        "quality": 0.5573547320365906,
+        "landmarks_reliable": false
+      },
+      {
+        "bbox": [
+          167,
+          111,
+          39,
+          50
+        ],
+        "confidence": 0.9171288013458252,
+        "brightness": 0.7019608020782471,
+        "contrast": 0.29450978636741687,
+        "sharpness": 3600.518798828125,
+        "noise": 0.008211502861976623,
+        "quality": 0.5530771265029908,
+        "landmarks_reliable": false
+      },
+      {
+        "bbox": [
+          329,
+          106,
+          39,
+          46
+        ],
+        "confidence": 0.915892481803894,
+        "brightness": 0.7215687036514282,
+        "contrast": 0.5372549593448639,
+        "sharpness": 5210.755859375,
+        "noise": 0.012702016603946684,
+        "quality": 0.5274170479774476,
+        "landmarks_reliable": false
+      },
+      {
+        "bbox": [
+          507,
+          91,
+          34,
+          47
+        ],
+        "confidence": 0.9092763662338257,
+        "brightness": 0.7137254476547241,
+        "contrast": 0.4901960790157318,
+        "sharpness": 5454.5732421875,
+        "noise": 0.01309537288248539,
+        "quality": 0.5251692978143693,
+        "landmarks_reliable": false
+      },
+      {
+        "bbox": [
+          258,
+          113,
+          37,
+          44
+        ],
+        "confidence": 0.8899027109146118,
+        "brightness": 0.7372548580169678,
+        "contrast": 0.42078433930873865,
+        "sharpness": 6277.18798828125,
+        "noise": 0.01301007388830185,
+        "quality": 0.5256567206382752,
+        "landmarks_reliable": false
+      }
+    ]
+  },
+  "decisions": {
+    "profile": "balanced",
+    "scene": "group",
+    "scene_confidence": 0.9500000000000001,
+    "scene_policy": {
+      "tone_scale": 1.0,
+      "denoise_scale": 1.0,
+      "sharpen_scale": 1.0,
+      "background_scale": 1.0
+    },
+    "subject_lift": 0.0,
+    "subject_gamma": 1.0,
+    "white_balance_a": 0.0,
+    "white_balance_b": 0.0,
+    "background_highlight_rolloff": 0.044000000000000004,
+    "background_saturation_reduction": 0.004,
+    "denoise_amount": 0.0,
+    "sharpen_amount": 0.0,
+    "eye_detail_amount": 0.0,
+    "hair_detail_amount": 0.0,
+    "teeth_protected": false,
+    "face_restoration_strengths": [
+      0.022813557934405204,
+      0.021268374428820246,
+      0.02380515805287148,
+      0.023047287699001943,
+      0.022079741513551177,
+      0.021856544530213774,
+      0.022686527693449556,
+      0.027665348899898235,
+      0.028101479528555223,
+      0.028006904950782435
+    ],
+    "upscale_requested": true,
+    "render_seconds": 4.168688300007489
+  },
+  "models": {
+    "segmentation": {
+      "capability": "person-instance-segmentation",
+      "provider": "torchvision-maskrcnn-resnet50-fpn",
+      "artifact": "maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth",
+      "version": "torchvision-0.22.0-coco-v1",
+      "sha256": "BF2D0C1EFBC936EEEE2BC95A48E80EBC86B891F61B0106485937FC29F9315FC0"
+    },
+    "face_detection": {
+      "capability": "face-detection",
+      "provider": "opencv-yunet",
+      "artifact": "face_detection_yunet_2023mar.onnx",
+      "version": "2023mar",
+      "sha256": "8F2383E4DD3CFBB4553EA8718107FC0423210DC964F9F4280604804ED2552FA4"
+    },
+    "face_restoration": {
+      "capability": "face-restoration",
+      "provider": "gfpgan",
+      "artifact": "GFPGANv1.3.pth",
+      "version": "1.3",
+      "sha256": "C953A88F2727C85C3D9AE72E2BD4846BBAF59FE6972AD94130E23E7017524A70"
+    },
+    "upscale": {
+      "capability": "conditional-upscale",
+      "provider": "real-esrgan",
+      "artifact": "RealESRGAN_x4plus.pth",
+      "version": "x4plus-v0.1.0",
+      "sha256": "4FA0D38905F75AC06EB49A7951B426670021BE3018265FD191D2125DF9D682F1"
+    }
+  }
+}

@@ -1,0 +1,1 @@
+"""Portrait Local desktop application."""

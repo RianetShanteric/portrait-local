@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "models": [
+    {
+      "capability": "person-instance-segmentation",
+      "provider": "torchvision-maskrcnn-resnet50-fpn",
+      "version": "torchvision-0.22.0-coco-v1",
+      "filename": "maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth",
+      "url": "https://download.pytorch.org/models/maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth",
+      "sha256": "BF2D0C1EFBC936EEEE2BC95A48E80EBC86B891F61B0106485937FC29F9315FC0",
+      "bytes": 178090079,
+      "license": "BSD-3-Clause (torchvision code); pretrained on COCO, whose dataset terms remain separate"
+    },
+    {
+      "capability": "person-segmentation",
+      "provider": "torchvision-deeplabv3-resnet50",
+      "version": "torchvision-0.22.0",
+      "filename": "deeplabv3_resnet50_coco-cd0a2569.pth",
+      "url": "https://download.pytorch.org/models/deeplabv3_resnet50_coco-cd0a2569.pth",
+      "sha256": "CD0A25694C4A0F7106B38F4938BF90A874F2F241CC410B8F63C7024399538F06",
+      "bytes": 168312152,
+      "license": "BSD-3-Clause (torchvision code); pretrained-data provenance must remain documented"
+    },
+    {
+      "capability": "face-detection",
+      "provider": "opencv-yunet",
+      "version": "2023mar",
+      "filename": "face_detection_yunet_2023mar.onnx",
+      "url": "https://github.com/opencv/opencv_zoo/raw/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx",
+      "sha256": "8F2383E4DD3CFBB4553EA8718107FC0423210DC964F9F4280604804ED2552FA4",
+      "bytes": 232589,
+      "license": "Apache-2.0; verify individual model terms before redistribution"
+    },
+    {
+      "capability": "face-restoration",
+      "provider": "gfpgan",
+      "version": "1.3",
+      "filename": "GFPGANv1.3.pth",
+      "url": "https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth",
+      "sha256": "C953A88F2727C85C3D9AE72E2BD4846BBAF59FE6972AD94130E23E7017524A70",
+      "bytes": 348632874,
+      "license": "Apache-2.0 with upstream third-party notices"
+    },
+    {
+      "capability": "face-restoration-detection",
+      "provider": "facexlib-retinaface-resnet50",
+      "version": "facexlib-v0.1.0",
+      "filename": "detection_Resnet50_Final.pth",
+      "install_path": "gfpgan/weights/detection_Resnet50_Final.pth",
+      "url": "https://github.com/xinntao/facexlib/releases/download/v0.1.0/detection_Resnet50_Final.pth",
+      "sha256": "6D1DE9C2944F2CCDDCA5F5E010EA5AE64A39845A86311AF6FDF30841B0A5A16D",
+      "bytes": 109497761,
+      "license": "MIT (facexlib); RetinaFace model used by GFPGAN face alignment"
+    },
+    {
+      "capability": "face-restoration-parsing",
+      "provider": "facexlib-parsenet",
+      "version": "facexlib-v0.2.2",
+      "filename": "parsing_parsenet.pth",
+      "install_path": "gfpgan/weights/parsing_parsenet.pth",
+      "url": "https://github.com/xinntao/facexlib/releases/download/v0.2.2/parsing_parsenet.pth",
+      "sha256": "3D558D8D0E42C20224F13CF5A29C79EBA2D59913419F945545D8CF7B72920DE2",
+      "bytes": 85331193,
+      "license": "MIT (facexlib); ParseNet model used by GFPGAN face compositing"
+    },
+    {
+      "capability": "conditional-upscale",
+      "provider": "real-esrgan",
+      "version": "x4plus-v0.1.0",
+      "filename": "RealESRGAN_x4plus.pth",
+      "url": "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth",
+      "sha256": "4FA0D38905F75AC06EB49A7951B426670021BE3018265FD191D2125DF9D682F1",
+      "bytes": 67040989,
+      "license": "BSD-3-Clause"
+    }
+  ]
+}

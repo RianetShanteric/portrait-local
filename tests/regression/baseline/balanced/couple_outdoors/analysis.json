@@ -1,0 +1,146 @@
+{
+  "metrics": {
+    "width": 3000,
+    "height": 1993,
+    "has_people": true,
+    "person_count": 2,
+    "person_confidences": [
+      0.9995133876800537,
+      0.9991760849952698
+    ],
+    "person_area": 0.40615466237068176,
+    "face_count": 2,
+    "landmark_face_count": 2,
+    "eye_area": 0.0009275799384340644,
+    "teeth_area": 0.00046195011236704886,
+    "hair_area": 0.015199531801044941,
+    "global_median": 0.4230140745639801,
+    "person_median": 0.35127805173397064,
+    "background_median": 0.5959122180938721,
+    "highlight_fraction": 0.0023090817862518815,
+    "shadow_fraction": 0.044367285499247365,
+    "dynamic_range": 0.813416387885809,
+    "global_saturation": 0.4470588266849518,
+    "person_saturation": 0.5137255191802979,
+    "background_saturation": 0.27450981736183167,
+    "background_saturation_p85": 0.6392157077789307,
+    "noise": 0.0018737058520317076,
+    "sharpness": 414.29925537109375,
+    "neutral_cast_a": -1.0,
+    "neutral_cast_b": 7.0,
+    "exposure_gap": 0.24463416635990143,
+    "needs_upscale": false,
+    "scene": "portrait",
+    "scene_confidence": 0.9575,
+    "scene_tags": [],
+    "scene_reasons": [
+      "detected_people=2",
+      "detected_faces=2",
+      "vegetation=0.28",
+      "structural_lines=0.27"
+    ],
+    "scene_scores": {
+      "portrait": 0.9575,
+      "group": 0.0,
+      "landscape": 0.2139,
+      "city": 0.08,
+      "architecture": 0.1546,
+      "indoor": 0.1592,
+      "night": 0.0,
+      "food": 0.0,
+      "animal": 0.0,
+      "object": 0.0,
+      "general": 0.22
+    },
+    "scene_signals": {
+      "sky_fraction_top": 0.0052,
+      "vegetation_fraction": 0.2805,
+      "line_signal": 0.2667,
+      "night_signal": 0.0,
+      "animal_object_signal": 0.0,
+      "food_object_signal": 0.0,
+      "dining_object_signal": 0.0,
+      "city_object_signal": 0.0,
+      "indoor_object_signal": 0.0
+    },
+    "detected_objects": [
+      {
+        "label": "person",
+        "confidence": 0.9995,
+        "area_fraction": 0.38122
+      },
+      {
+        "label": "person",
+        "confidence": 0.9992,
+        "area_fraction": 0.40754
+      }
+    ],
+    "faces": [
+      {
+        "bbox": [
+          940,
+          683,
+          360,
+          539
+        ],
+        "confidence": 0.9033254981040955,
+        "brightness": 0.327497273683548,
+        "contrast": 0.29761973321437835,
+        "sharpness": 620.223388671875,
+        "noise": 0.003083356493711471,
+        "quality": 0.9823808200359345,
+        "landmarks_reliable": true
+      },
+      {
+        "bbox": [
+          1860,
+          570,
+          349,
+          498
+        ],
+        "confidence": 0.8565877079963684,
+        "brightness": 0.3685392141342163,
+        "contrast": 0.2968216046690941,
+        "sharpness": 674.8157348632812,
+        "noise": 0.0030511014997959135,
+        "quality": 0.9825651342868805,
+        "landmarks_reliable": true
+      }
+    ]
+  },
+  "timings": {
+    "person_segmentation_seconds": 0.7913890999625437,
+    "face_analysis_seconds": 0.5040431000525132,
+    "metrics_seconds": 1.1653140999842435,
+    "analysis_total_seconds": 2.4607462999993004
+  },
+  "decisions": {
+    "profile": "balanced",
+    "scene": "portrait",
+    "scene_confidence": 0.9575,
+    "scene_policy": {
+      "tone_scale": 1.0,
+      "denoise_scale": 1.0,
+      "sharpen_scale": 1.0,
+      "background_scale": 1.0
+    },
+    "subject_lift": 0.09,
+    "subject_gamma": 0.7819708747745461,
+    "white_balance_a": 0.18,
+    "white_balance_b": -1.26,
+    "background_highlight_rolloff": 0.008945954895019526,
+    "background_saturation_reduction": 0.05094902648925782,
+    "denoise_amount": 0.0,
+    "sharpen_amount": 0.0,
+    "eye_detail_amount": 0.035,
+    "hair_detail_amount": 0.03,
+    "teeth_protected": true,
+    "face_restoration_strengths": [
+      0.0,
+      0.0
+    ],
+    "upscale_requested": false,
+    "render_seconds": 1.178056100034155
+  },
+  "inference": "torchvision-maskrcnn-resnet50-fpn; opencv-yunet; OpenCV CPU"
+}

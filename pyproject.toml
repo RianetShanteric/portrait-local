@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "portrait-local"
+version = "0.4.0"
+description = "Local-first content-aware photo enhancement for Windows"
+requires-python = ">=3.12,<3.13"
+license = {text = "Apache-2.0"}
+dependencies = [
+  "Pillow==10.4.0",
+  "opencv-python==4.10.0.84",
+  "customtkinter==5.2.2",
+  "numpy==1.26.4",
+  "basicsr==1.4.2",
+  "facexlib==0.3.0",
+  "gfpgan==1.3.8"
+]
+
+[project.optional-dependencies]
+dev = ["pytest==8.3.5"]
+
+[tool.setuptools.packages.find]
+include = ["app*", "core*", "pipeline*", "providers*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = ["gpu: requires installed local models and CUDA"]

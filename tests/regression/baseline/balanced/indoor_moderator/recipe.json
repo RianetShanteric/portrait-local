@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "application_version": "0.4.0",
+  "regression_case": "indoor_moderator",
+  "input": {
+    "name": "indoor_moderator_public_domain.jpg",
+    "sha256": "458B4CAF548FADF3582717249ABE9F8201A2E390166A1AD9267536B8036647D5"
+  },
+  "output": {
+    "name": "result.jpg",
+    "sha256": "93337BA4CC7B6BCE995224C05F34BE0DEA78B72E6AF606115C80F6171BBF83A7"
+  },
+  "profile": "balanced",
+  "metrics": {
+    "width": 1955,
+    "height": 3000,
+    "has_people": true,
+    "person_count": 1,
+    "person_confidences": [
+      0.9989859461784363
+    ],
+    "person_area": 0.23075413703918457,
+    "face_count": 1,
+    "landmark_face_count": 1,
+    "eye_area": 0.00041364028584212065,
+    "teeth_area": 0.00033793694456107914,
+    "hair_area": 0.0013306551845744252,
+    "global_median": 0.5818544924259186,
+    "person_median": 0.06636784970760345,
+    "background_median": 0.6752964854240417,
+    "highlight_fraction": 0.053436487638533675,
+    "shadow_fraction": 0.12950468883205457,
+    "dynamic_range": 0.978095717728138,
+    "global_saturation": 0.1411764770746231,
+    "person_saturation": 0.40784314274787903,
+    "background_saturation": 0.09019608050584793,
+    "background_saturation_p85": 0.3803921639919281,
+    "noise": 0.005062266647815704,
+    "sharpness": 997.8264770507812,
+    "neutral_cast_a": -1.0,
+    "neutral_cast_b": 5.0,
+    "exposure_gap": 0.6089286357164383,
+    "needs_upscale": false,
+    "scene": "portrait",
+    "scene_confidence": 0.9038393616676331,
+    "scene_tags": [],
+    "scene_reasons": [
+      "detected_people=1",
+      "detected_faces=1",
+      "structural_lines=0.44"
+    ],
+    "scene_scores": {
+      "portrait": 0.9038,
+      "group": 0.0,
+      "landscape": 0.0,
+      "city": 0.1333,
+      "architecture": 0.3279,
+      "indoor": 0.2905,
+      "night": 0.0,
+      "food": 0.0,
+      "animal": 0.0,
+      "object": 0.1618,
+      "general": 0.22
+    },
+    "scene_signals": {
+      "sky_fraction_top": 0.0233,
+      "vegetation_fraction": 0.033,
+      "line_signal": 0.4444,
+      "night_signal": 0.0,
+      "animal_object_signal": 0.0,
+      "food_object_signal": 0.0,
+      "dining_object_signal": 0.0,
+      "city_object_signal": 0.0,
+      "indoor_object_signal": 0.1637
+    },
+    "detected_objects": [
+      {
+        "label": "person",
+        "confidence": 0.999,
+        "area_fraction": 0.52966
+      },
+      {
+        "label": "scissors",
+        "confidence": 0.8883,
+        "area_fraction": 0.00803
+      }
+    ],
+    "faces": [
+      {
+        "bbox": [
+          455,
+          876,
+          346,
+          467
+        ],
+        "confidence": 0.9249862432479858,
+        "brightness": 0.5990148782730103,
+        "contrast": 0.3582309544086456,
+        "sharpness": 1010.1075439453125,
+        "noise": 0.005419811046123504,
+        "quality": 0.9690296511650086,
+        "landmarks_reliable": true
+      }
+    ]
+  },
+  "decisions": {
+    "profile": "balanced",
+    "scene": "portrait",
+    "scene_confidence": 0.9038393616676331,
+    "scene_policy": {
+      "tone_scale": 1.0,
+      "denoise_scale": 1.0,
+      "sharpen_scale": 1.0,
+      "background_scale": 1.0
+    },
+    "subject_lift": 0.09,
+    "subject_gamma": 0.72,
+    "white_balance_a": 0.18,
+    "white_balance_b": -0.8999999999999999,
+    "background_highlight_rolloff": 0.03977902813299233,
+    "background_saturation_reduction": 0.04343298895168175,
+    "denoise_amount": 0.0,
+    "sharpen_amount": 0.0,
+    "eye_detail_amount": 0.035,
+    "hair_detail_amount": 0.03,
+    "teeth_protected": true,
+    "face_restoration_strengths": [
+      0.0
+    ],
+    "upscale_requested": false,
+    "render_seconds": 1.061786500038579
+  },
+  "models": {
+    "segmentation": {
+      "capability": "person-instance-segmentation",
+      "provider": "torchvision-maskrcnn-resnet50-fpn",
+      "artifact": "maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth",
+      "version": "torchvision-0.22.0-coco-v1",
+      "sha256": "BF2D0C1EFBC936EEEE2BC95A48E80EBC86B891F61B0106485937FC29F9315FC0"
+    },
+    "face_detection": {
+      "capability": "face-detection",
+      "provider": "opencv-yunet",
+      "artifact": "face_detection_yunet_2023mar.onnx",
+      "version": "2023mar",
+      "sha256": "8F2383E4DD3CFBB4553EA8718107FC0423210DC964F9F4280604804ED2552FA4"
+    },
+    "face_restoration": null,
+    "upscale": null
+  }
+}

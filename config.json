@@ -1,0 +1,21 @@
+{
+  "application_version": "0.4.0",
+  "input_extensions": [".jpg", ".jpeg", ".png", ".webp"],
+  "runtime": {"device": "cuda"},
+  "analysis": {
+    "person_segmentation_provider": "torchvision-maskrcnn-resnet50-fpn",
+    "person_segmentation_model": "maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth",
+    "person_segmentation_fallback_model": "deeplabv3_resnet50_coco-cd0a2569.pth",
+    "person_instance_score_threshold": 0.68,
+    "person_confidence": 0.30,
+    "face_detection_threshold": 0.80,
+    "conditional_upscale_min_side": 720
+  },
+  "profiles": {
+    "natural": {"intensity": 0.65, "subject_lift_cap": 0.060, "background_control": 0.55, "denoise_strength": 0.55, "sharpen_strength": 0.50, "face_restore_cap": 0.08},
+    "balanced": {"intensity": 1.00, "subject_lift_cap": 0.090, "background_control": 0.80, "denoise_strength": 0.80, "sharpen_strength": 0.75, "face_restore_cap": 0.13},
+    "strong": {"intensity": 1.25, "subject_lift_cap": 0.125, "background_control": 1.00, "denoise_strength": 1.00, "sharpen_strength": 1.00, "face_restore_cap": 0.18}
+  },
+  "upscale": {"tile": 512},
+  "output": {"jpeg_quality": 95, "suffix": "__portrait", "keep_work_files": false}
+}

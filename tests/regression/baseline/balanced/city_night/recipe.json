@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "application_version": "0.4.0",
+  "regression_case": "city_night",
+  "input": {
+    "name": "city_night_public_domain.jpg",
+    "sha256": "72BB665E1192F4B8302F49065ECABE28EFE0C24663FECCD68D8D1C9DCED183FE"
+  },
+  "output": {
+    "name": "result.jpg",
+    "sha256": "D54CFE3861E255CBB891F9D3A10FE3C15C7ACC906502669A4EDC10F9648B93B7"
+  },
+  "profile": "balanced",
+  "metrics": {
+    "width": 2200,
+    "height": 1453,
+    "has_people": true,
+    "person_count": 5,
+    "person_confidences": [
+      0.995050847530365,
+      0.9943482279777527,
+      0.9899420738220215,
+      0.9852223992347717,
+      0.7668465375900269
+    ],
+    "person_area": 0.009554939344525337,
+    "face_count": 0,
+    "landmark_face_count": 0,
+    "eye_area": 0.0,
+    "teeth_area": 0.0,
+    "hair_area": 0.0,
+    "global_median": 0.24016548693180084,
+    "person_median": 0.35903647541999817,
+    "background_median": 0.23875528573989868,
+    "highlight_fraction": 0.013352937496089595,
+    "shadow_fraction": 0.26736094600513044,
+    "dynamic_range": 0.9473317349329591,
+    "global_saturation": 0.3960784375667572,
+    "person_saturation": 0.3960784375667572,
+    "background_saturation": 0.3960784375667572,
+    "background_saturation_p85": 0.7921568751335144,
+    "noise": 0.0033200772196054456,
+    "sharpness": 1502.4093017578125,
+    "neutral_cast_a": -11.0,
+    "neutral_cast_b": 10.0,
+    "exposure_gap": -0.12028118968009949,
+    "needs_upscale": false,
+    "scene": "city",
+    "scene_confidence": 0.98,
+    "scene_tags": [
+      "night"
+    ],
+    "scene_reasons": [
+      "detected_people=5",
+      "city_objects=1.00",
+      "vegetation=0.40",
+      "structural_lines=1.00",
+      "low_light=0.33"
+    ],
+    "scene_scores": {
+      "portrait": 0.5543,
+      "group": 0.95,
+      "landscape": 0.2031,
+      "city": 1.0,
+      "architecture": 0.688,
+      "indoor": 0.1543,
+      "night": 0.3338,
+      "food": 0.0,
+      "animal": 0.0,
+      "object": 0.2622,
+      "general": 0.22
+    },
+    "scene_signals": {
+      "sky_fraction_top": 0.0355,
+      "vegetation_fraction": 0.4025,
+      "line_signal": 1.0,
+      "night_signal": 0.3338,
+      "animal_object_signal": 0.0,
+      "food_object_signal": 0.0,
+      "dining_object_signal": 0.0,
+      "city_object_signal": 1.0,
+      "indoor_object_signal": 0.0
+    },
+    "detected_objects": [
+      {
+        "label": "person",
+        "confidence": 0.9951,
+        "area_fraction": 0.00502
+      },
+      {
+        "label": "person",
+        "confidence": 0.9943,
+        "area_fraction": 0.00496
+      },
+      {
+        "label": "person",
+        "confidence": 0.9899,
+        "area_fraction": 0.00311
+      },
+      {
+        "label": "traffic light",
+        "confidence": 0.9897,
+        "area_fraction": 0.00281
+      },
+      {
+        "label": "traffic light",
+        "confidence": 0.9865,
+        "area_fraction": 0.00543
+      },
+      {
+        "label": "person",
+        "confidence": 0.9852,
+        "area_fraction": 0.00467
+      },
+      {
+        "label": "car",
+        "confidence": 0.9175,
+        "area_fraction": 0.00259
+      },
+      {
+        "label": "car",
+        "confidence": 0.8911,
+        "area_fraction": 0.03608
+      },
+      {
+        "label": "traffic light",
+        "confidence": 0.8286,
+        "area_fraction": 0.00524
+      },
+      {
+        "label": "car",
+        "confidence": 0.8047,
+        "area_fraction": 0.00195
+      },
+      {
+        "label": "person",
+        "confidence": 0.7668,
+        "area_fraction": 0.00141
+      },
+      {
+        "label": "traffic light",
+        "confidence": 0.6615,
+        "area_fraction": 0.0021
+      },
+      {
+        "label": "car",
+        "confidence": 0.6449,
+        "area_fraction": 0.00172
+      },
+      {
+        "label": "traffic light",
+        "confidence": 0.6312,
+        "area_fraction": 0.00264
+      },
+      {
+        "label": "traffic light",
+        "confidence": 0.627,
+        "area_fraction": 0.00105
+      },
+      {
+        "label": "traffic light",
+        "confidence": 0.6152,
+        "area_fraction": 0.00084
+      }
+    ],
+    "faces": []
+  },
+  "decisions": {
+    "profile": "balanced",
+    "scene": "city",
+    "scene_confidence": 0.98,
+    "scene_policy": {
+      "tone_scale": 0.58,
+      "denoise_scale": 1.12,
+      "sharpen_scale": 0.68,
+      "background_scale": 0.62
+    },
+    "general_gamma": 0.9073571114693655,
+    "white_balance_a": 1.98,
+    "white_balance_b": -1.7999999999999998,
+    "background_highlight_rolloff": 0.000805268397672527,
+    "background_saturation_reduction": 0.03968,
+    "denoise_amount": 0.0,
+    "sharpen_amount": 0.0,
+    "eye_detail_amount": 0.0,
+    "hair_detail_amount": 0.0,
+    "teeth_protected": false,
+    "face_restoration_strengths": [],
+    "upscale_requested": false,
+    "render_seconds": 0.5352802999550477
+  },
+  "models": {
+    "segmentation": {
+      "capability": "person-instance-segmentation",
+      "provider": "torchvision-maskrcnn-resnet50-fpn",
+      "artifact": "maskrcnn_resnet50_fpn_coco-bf2d0c1e.pth",
+      "version": "torchvision-0.22.0-coco-v1",
+      "sha256": "BF2D0C1EFBC936EEEE2BC95A48E80EBC86B891F61B0106485937FC29F9315FC0"
+    },
+    "face_detection": {
+      "capability": "face-detection",
+      "provider": "opencv-yunet",
+      "artifact": "face_detection_yunet_2023mar.onnx",
+      "version": "2023mar",
+      "sha256": "8F2383E4DD3CFBB4553EA8718107FC0423210DC964F9F4280604804ED2552FA4"
+    },
+    "face_restoration": null,
+    "upscale": null
+  }
+}
