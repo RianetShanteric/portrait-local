@@ -1,8 +1,19 @@
 # Changelog
 
-This changelog records shipped project behavior. Planned work is listed in
-[`ROADMAP.md`](<ROADMAP.md>) and is not presented as part of the current
-release.
+This changelog records shipped project behavior and clearly labelled
+documentation/process changes. Planned work is listed in [`ROADMAP.md`](<ROADMAP.md>)
+and is not presented as part of the current release.
+
+## [Unreleased]
+
+### Documentation and process
+
+- aligned the roadmap with the bounded v0.4.0 product and approved future
+  milestones;
+- documented the branch, commit, validation and release workflow;
+- clarified the boundary between CPU-safe CI and local GPU acceptance;
+- corrected the `couple_outdoors` regression-asset attribution;
+- made no application, dependency, model or version changes.
 
 ## [0.4.0] - Public Portfolio Snapshot
 
