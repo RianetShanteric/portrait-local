@@ -119,7 +119,8 @@ Run the development checks after installation:
 GitHub Actions runs the CPU-safe contract and scene-analysis tests without
 model weights or CUDA. The full test suite additionally contains pipeline
 checks that require local model weights and is intended for the validated local
-NVIDIA environment.
+NVIDIA environment. A passing CPU-safe CI check is not evidence of GPU
+acceptance.
 
 ## Limitations and Scope
 
@@ -135,6 +136,8 @@ NVIDIA environment.
 
 ## Project Documents
 
+- [`DEVELOPMENT.md`](<DEVELOPMENT.md>) describes branching, commits, validation
+  tiers and release expectations;
 - [`PRODUCT.md`](<PRODUCT.md>) describes the current product scope;
 - [`ROADMAP.md`](<ROADMAP.md>) separates future candidates from implemented
   behavior;
