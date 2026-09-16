@@ -20,7 +20,8 @@ which are deliberately absent from the repository derivative.
 
 - Source: Wikimedia Commons, “Couple outdoors.jpg” (National Cancer Institute
   Visuals Online, image 4500)
-- Author: National Cancer Institute, an agency of the U.S. federal government
+- Author: Bill Branson (photographer); National Cancer Institute (source), an
+  agency of the U.S. federal government
 - License: public domain (U.S. federal government work)
 - Stored size: 3000 x 1993 JPEG
 - Coverage: two faces, mixed skin tones, fine hair, dark/light clothing and a
