@@ -48,5 +48,6 @@ if (Test-Path -LiteralPath $basicSrPath) {
 
 & $venvPython (Join-Path $PSScriptRoot 'download_models.py') $projectRoot
 & $venvPython -c "import torch; assert torch.cuda.is_available(); print('GPU:', torch.cuda.get_device_name(0))"
-& $venvPython -m pip freeze | Set-Content -LiteralPath (Join-Path $projectRoot 'requirements.lock') -Encoding utf8
+# Keep the published dependency snapshot stable.  The installer must not
+# overwrite tracked requirements.lock with machine-specific pip-freeze output.
 Write-Host 'Portrait Local installation completed.' -ForegroundColor Green
