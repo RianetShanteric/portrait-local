@@ -31,7 +31,9 @@ regression images.
 ## Runtime Policy
 
 - maximum analysis side is 1280 pixels;
-- only COCO class `person` is accepted;
+- only COCO class `person` is accepted by the person-segmentation provider;
+- other object labels may be consumed by the separate explainable scene
+  classification stage, but they are not segmentation classes;
 - instance score must be at least 0.68;
 - tiny masks below 0.035% of the inference frame are discarded;
 - accepted instances are merged only after their individual confidences have
