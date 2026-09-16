@@ -72,8 +72,9 @@ and versions are declared in `pyproject.toml` and captured in
 
 ## Regression Photographs
 
-- `couple_outdoors_public_domain.jpg`: National Cancer Institute; public domain
-  as a work of the U.S. federal government.
+- `couple_outdoors_public_domain.jpg`: Bill Branson (photographer) / National
+  Cancer Institute (source); public domain as a work of the U.S. federal
+  government.
 - `indoor_moderator_public_domain.jpg`: Bill Branson / National Cancer
   Institute; public domain as a work of the U.S. federal government.
 - `longfellow_group_public_domain.jpg`: National Cancer Institute; public
