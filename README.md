@@ -1,5 +1,7 @@
 # PortraitLocal
 
+[![CI](https://github.com/RianetShanteric/portrait-local/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/RianetShanteric/portrait-local/actions/workflows/ci.yml)
+
 PortraitLocal is a local-first Windows photo enhancement application built
 around a conservative AI/CV pipeline. It analyzes each image, selects bounded
 scene-aware processing stages, and produces a new enhanced image without
@@ -100,11 +102,24 @@ regression inventory and reproducible visual/machine-readable evidence are in
 model provenance are recorded in
 [`THIRD_PARTY_NOTICES.md`](<THIRD_PARTY_NOTICES.md>).
 
+### Public demonstration
+
+The following documented regression comparison is included for a visual
+example. It uses a public-domain source image, and the complete baseline folder
+contains the corresponding input/output hashes, recipe and attribution:
+
+![Couple outdoors documented before-and-after regression comparison](<tests/regression/baseline/balanced/couple_outdoors/before-after.jpg>)
+
 Run the development checks after installation:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest
 ```
+
+GitHub Actions runs the CPU-safe contract and scene-analysis tests without
+model weights or CUDA. The full test suite additionally contains pipeline
+checks that require local model weights and is intended for the validated local
+NVIDIA environment.
 
 ## Limitations and Scope
 
@@ -117,6 +132,15 @@ Run the development checks after installation:
   denoise/deblur models, queue cancellation/retry and series consistency are
   outside the current release scope;
 - the current workflow accepts common raster formats and exports a new JPEG.
+
+## Project Documents
+
+- [`PRODUCT.md`](<PRODUCT.md>) describes the current product scope;
+- [`ROADMAP.md`](<ROADMAP.md>) separates future candidates from implemented
+  behavior;
+- [`CHANGELOG.md`](<CHANGELOG.md>) records shipped release content;
+- [`SECURITY.md`](<SECURITY.md>) describes safe vulnerability reporting and
+  handling of local photo data.
 
 ## License
 
