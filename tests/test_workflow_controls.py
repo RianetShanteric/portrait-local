@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 
 import app.cli as cli
+import app.ui as ui
 from app.workflow import (
     CANCELLED_RETURN_CODE,
     CancellationRequested,
@@ -16,6 +17,137 @@ from app.workflow import (
     parse_progress_line,
     raise_if_cancelled,
 )
+
+
+class _FakeControl:
+    def __init__(self) -> None:
+        self.configurations: list[dict[str, object]] = []
+        self.values: list[object] = []
+
+    def configure(self, **kwargs: object) -> None:
+        self.configurations.append(kwargs)
+
+    def set(self, value: object) -> None:
+        self.values.append(value)
+
+    def grid(self, *args: object, **kwargs: object) -> None:
+        pass
+
+    def grid_columnconfigure(self, *args: object, **kwargs: object) -> None:
+        pass
+
+    def destroy(self) -> None:
+        pass
+
+    def winfo_children(self) -> list[object]:
+        return []
+
+
+class _FakeVariable:
+    def __init__(self, value: str) -> None:
+        self.value = value
+
+    def set(self, value: str) -> None:
+        self.value = value
+
+
+def _fake_portrait_app(tmp_path: Path, source_count: int = 1) -> ui.PortraitApp:
+    app = ui.PortraitApp.__new__(ui.PortraitApp)
+    app.root_dir = tmp_path
+    app.output_dir = tmp_path / "data" / "output"
+    app.output_dir.mkdir(parents=True)
+    app.sources = [Path(f"portrait_{index}.jpg") for index in range(source_count)]
+    app.selected = app.sources[0] if app.sources else None
+    app.current_result = tmp_path / "old-result.jpg"
+    app.latest_output = tmp_path / "old-output"
+    app.running = False
+    app.retry_available = True
+    app.cancel_file = None
+    app.preview_mode = _FakeVariable("Результат")
+    app.progress = _FakeControl()
+    app.status_label = _FakeControl()
+    app.open_output_button = _FakeControl()
+    app.profile_control = _FakeControl()
+    app.run_button = _FakeControl()
+    app.show_preview = lambda: None
+    return app
+
+
+def test_successful_completion_restores_primary_action(tmp_path: Path) -> None:
+    app = _fake_portrait_app(tmp_path)
+
+    app._processing_finished(0, "", "")
+
+    assert app.retry_available is False
+    assert app.run_button.configurations[-1] == {
+        "state": "normal",
+        "text": "ОБРАБОТАТЬ  ·  1",
+    }
+
+
+def test_queue_change_clears_completed_result_state_and_ready_action(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    app = _fake_portrait_app(tmp_path)
+    app.input_dir = tmp_path / "data" / "input"
+    app.input_dir.mkdir(parents=True)
+    current_source = app.input_dir / "portrait_0.jpg"
+    current_source.write_bytes(b"current source")
+    new_source = app.input_dir / "portrait_1.jpg"
+    app.sources = [current_source]
+    app.selected = current_source
+    app.file_list = _FakeControl()
+    app.count_label = _FakeControl()
+    app.status_label.configure(text="Готово · 1 фото", text_color=ui.MINT)
+    monkeypatch.setattr(ui.ctk, "CTkFrame", lambda *args, **kwargs: _FakeControl())
+    monkeypatch.setattr(ui.ctk, "CTkButton", lambda *args, **kwargs: _FakeControl())
+    new_source.write_bytes(b"new source")
+
+    app.refresh_files()
+
+    assert app.current_result is None
+    assert app.latest_output is None
+    assert app.retry_available is False
+    assert app.preview_mode.value == "Исходник"
+    assert app.progress.values[-1] == 0
+    assert app.status_label.configurations[-1] == {
+        "text": "Готова к работе",
+        "text_color": ui.MUTED,
+    }
+    assert app.open_output_button.configurations[-1] == {"state": "disabled"}
+    assert app.run_button.configurations[-1] == {
+        "state": "normal",
+        "text": "ОБРАБОТАТЬ  ·  2",
+    }
+
+
+def test_cancelled_completion_keeps_retry_action(tmp_path: Path) -> None:
+    app = _fake_portrait_app(tmp_path)
+
+    app._processing_finished(ui.CANCELLED_RETURN_CODE, "", "")
+
+    assert app.retry_available is True
+    assert app.run_button.configurations[-1] == {
+        "text": "ПОВТОРИТЬ",
+    }
+
+
+def test_failed_completion_keeps_retry_action(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    app = _fake_portrait_app(tmp_path)
+    monkeypatch.setattr(ui.messagebox, "showerror", lambda *args, **kwargs: None)
+
+    app._processing_finished(1, "failure output", "failure details")
+
+    assert app.retry_available is True
+    assert app.run_button.configurations[-1] == {
+        "text": "ПОВТОРИТЬ",
+    }
+    assert app.status_label.configurations[-1] == {
+        "text": "Что-то сломалось · можно повторить",
+        "text_color": ui.DANGER,
+    }
 
 
 def test_cancel_marker_is_cooperative_and_local(tmp_path: Path) -> None:

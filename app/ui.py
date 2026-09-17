@@ -292,6 +292,15 @@ class PortraitApp(ctk.CTk):
             text = "ОБРАБОТАТЬ" if not self.sources else f"ОБРАБОТАТЬ  ·  {len(self.sources)}"
         self.run_button.configure(state="normal", text=text)
 
+    def _reset_workflow_after_queue_change(self) -> None:
+        self.retry_available = False
+        self.current_result = None
+        self.latest_output = None
+        self.preview_mode.set("Исходник")
+        self.progress.set(0)
+        self.status_label.configure(text="Готова к работе", text_color=MUTED)
+        self.open_output_button.configure(state="disabled")
+
     def refresh_files(self, select: Path | None = None) -> None:
         self.input_dir.mkdir(parents=True, exist_ok=True)
         extensions = {".jpg", ".jpeg", ".png", ".webp"}
@@ -299,6 +308,7 @@ class PortraitApp(ctk.CTk):
             (path for path in self.input_dir.iterdir() if path.is_file() and path.suffix.lower() in extensions),
             key=lambda path: path.name.lower(),
         )
+        self._reset_workflow_after_queue_change()
         for widget in self.file_list.winfo_children():
             widget.destroy()
         for index, source in enumerate(self.sources):
@@ -342,6 +352,8 @@ class PortraitApp(ctk.CTk):
             self.selected = None
             self.preview_image = None
             self.preview_label.configure(image=None, text="＋\n\nДобавь фотографии слева")
+        else:
+            self.show_preview()
 
     def select_source(self, source: Path) -> None:
         self.selected = source
@@ -531,6 +543,7 @@ class PortraitApp(ctk.CTk):
             return
 
         self.retry_available = False
+        self._update_run_button()
         self.progress.set(1)
         folders = sorted((path for path in self.output_dir.iterdir() if path.is_dir()), key=lambda path: path.stat().st_mtime)
         latest = folders[-1] if folders else None
