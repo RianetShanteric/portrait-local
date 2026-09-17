@@ -38,7 +38,7 @@ jobs:
         run: python -m pip check
 
       - name: Run CPU-safe tests
-        run: python -m pytest tests/test_contracts.py tests/test_scene_analysis.py
+        run: python -m pytest tests/test_contracts.py tests/test_scene_analysis.py tests/test_workflow_controls.py
 
       - name: Compile Python modules
         run: python -m compileall -q app core pipeline providers scripts tests

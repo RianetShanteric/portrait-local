@@ -5,17 +5,24 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import queue
 import shutil
 import subprocess
 import sys
 import threading
 import traceback
+from typing import Any
 from datetime import datetime
 from pathlib import Path
 from tkinter import filedialog, messagebox
 
 import customtkinter as ctk
 from PIL import Image, ImageOps
+from app.workflow import (
+    CANCELLED_RETURN_CODE,
+    new_cancellation_marker,
+    parse_progress_line,
+)
 
 
 BG = "#0b0d12"
@@ -55,6 +62,9 @@ class PortraitApp(ctk.CTk):
         self.current_result: Path | None = None
         self.preview_image: ctk.CTkImage | None = None
         self.running = False
+        self.retry_available = False
+        self.cancel_file: Path | None = None
+        self.worker_events: queue.Queue[tuple[str, Any]] = queue.Queue()
 
         self.title("Portrait Local")
         self.geometry("1080x720")
@@ -195,7 +205,7 @@ class PortraitApp(ctk.CTk):
         )
         self.run_button.grid(row=6, column=0, sticky="ew", padx=18, pady=(0, 10))
         self.progress = ctk.CTkProgressBar(
-            left, mode="indeterminate", height=4, progress_color=MINT, fg_color="#242936"
+            left, height=4, progress_color=MINT, fg_color="#242936"
         )
         self.progress.grid(row=7, column=0, sticky="ew", padx=22, pady=(0, 7))
         self.progress.set(0)
@@ -273,6 +283,15 @@ class PortraitApp(ctk.CTk):
         )
         self.open_output_button.grid(row=0, column=1, sticky="e")
 
+    def _update_run_button(self) -> None:
+        if self.running:
+            return
+        if self.retry_available:
+            text = "ПОВТОРИТЬ"
+        else:
+            text = "ОБРАБОТАТЬ" if not self.sources else f"ОБРАБОТАТЬ  ·  {len(self.sources)}"
+        self.run_button.configure(state="normal", text=text)
+
     def refresh_files(self, select: Path | None = None) -> None:
         self.input_dir.mkdir(parents=True, exist_ok=True)
         extensions = {".jpg", ".jpeg", ".png", ".webp"}
@@ -314,7 +333,7 @@ class PortraitApp(ctk.CTk):
             remove.grid(row=0, column=1, padx=5)
         count = len(self.sources)
         self.count_label.configure(text="INPUT пуст" if not count else f"В очереди: {count}")
-        self.run_button.configure(text="ОБРАБОТАТЬ" if not count else f"ОБРАБОТАТЬ  ·  {count}")
+        self._update_run_button()
         if select and select in self.sources:
             self.select_source(select)
         elif self.sources and self.selected not in self.sources:
@@ -330,6 +349,8 @@ class PortraitApp(ctk.CTk):
         self.show_preview()
 
     def add_files(self) -> None:
+        if self.running:
+            return
         selected = filedialog.askopenfilenames(
             title="Добавить портреты",
             filetypes=[("Фотографии", "*.jpg *.jpeg *.png *.webp"), ("Все файлы", "*.*")],
@@ -382,22 +403,52 @@ class PortraitApp(ctk.CTk):
 
     def start_processing(self) -> None:
         if self.running:
+            self.cancel_processing()
             return
         self.refresh_files(self.selected)
         if not self.sources:
+            self.retry_available = False
+            self._update_run_button()
             messagebox.showinfo("INPUT пуст", "Добавь хотя бы одну фотографию.", parent=self)
             return
+        self.retry_available = False
+        self.current_result = None
+        self.latest_output = None
+        self.preview_mode.set("Исходник")
+        self.show_preview()
         self.running = True
-        self.run_button.configure(state="disabled", text="ОБРАБАТЫВАЮ…")
+        self.run_button.configure(state="normal", text="ОТМЕНИТЬ")
         self.profile_control.configure(state="disabled")
         self.open_output_button.configure(state="disabled")
         self.status_label.configure(text="RTX считает локально · окно можно оставить в фоне", text_color=MINT)
-        self.progress.start()
+        self.progress.set(0)
         profile = PROFILES[self.profile.get()]
-        thread = threading.Thread(target=self._process_worker, args=(profile,), daemon=True)
-        thread.start()
+        self.cancel_file = new_cancellation_marker(self.root_dir)
+        self.cancel_file.parent.mkdir(parents=True, exist_ok=True)
+        thread = threading.Thread(
+            target=self._process_worker,
+            args=(profile, self.cancel_file),
+            daemon=True,
+        )
+        try:
+            thread.start()
+        except RuntimeError as error:
+            self._processing_finished(1, "", f"{error}\n{traceback.format_exc()}")
+            return
+        self.after(50, self._drain_worker_events)
 
-    def _process_worker(self, profile: str) -> None:
+    def cancel_processing(self) -> None:
+        if not self.running or self.cancel_file is None:
+            return
+        try:
+            self.cancel_file.touch(exist_ok=True)
+        except OSError as error:
+            self.status_label.configure(text=f"Не удалось остановить: {error}", text_color=DANGER)
+            return
+        self.run_button.configure(state="disabled", text="ОТМЕНЯЮ…")
+        self.status_label.configure(text="Остановка после текущего этапа…", text_color=MUTED)
+
+    def _process_worker(self, profile: str, cancel_file: Path) -> None:
         command = [
             sys.executable,
             "-u",
@@ -407,34 +458,71 @@ class PortraitApp(ctk.CTk):
             str(self.root_dir),
             "--profile",
             profile,
+            "--cancel-file",
+            str(cancel_file),
         ]
         flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
         try:
-            result = subprocess.run(
+            process = subprocess.Popen(
                 command,
                 cwd=self.root_dir,
-                capture_output=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
                 text=True,
                 encoding="utf-8",
                 errors="replace",
+                bufsize=1,
                 creationflags=flags,
             )
-            self.after(0, self._processing_finished, result.returncode, result.stdout, result.stderr)
+            output: list[str] = []
+            assert process.stdout is not None
+            for line in process.stdout:
+                output.append(line)
+                self.worker_events.put(("progress", line.rstrip()))
+            return_code = process.wait()
+            self.worker_events.put(("finished", (return_code, "".join(output), "")))
         except Exception as error:
-            self.after(0, self._processing_finished, 1, "", f"{error}\n{traceback.format_exc()}")
+            self.worker_events.put(("finished", (1, "", f"{error}\n{traceback.format_exc()}")))
+
+    def _drain_worker_events(self) -> None:
+        while True:
+            try:
+                event, payload = self.worker_events.get_nowait()
+            except queue.Empty:
+                break
+            if event == "progress":
+                self._processing_progress(str(payload))
+            elif event == "finished":
+                return_code, stdout, stderr = payload
+                self._processing_finished(int(return_code), str(stdout), str(stderr))
+        if self.running or not self.worker_events.empty():
+            self.after(50, self._drain_worker_events)
 
     def _processing_finished(self, return_code: int, stdout: str, stderr: str) -> None:
         self.running = False
-        self.progress.stop()
-        self.progress.set(0)
+        cancel_file = self.cancel_file
+        self.cancel_file = None
+        if cancel_file is not None:
+            try:
+                cancel_file.unlink()
+            except FileNotFoundError:
+                pass
+            except OSError:
+                pass
         self.profile_control.configure(state="normal")
         self.run_button.configure(state="normal")
-        self.run_button.configure(text=f"ОБРАБОТАТЬ  ·  {len(self.sources)}")
+        if return_code == CANCELLED_RETURN_CODE:
+            self.retry_available = True
+            self.run_button.configure(text="ПОВТОРИТЬ")
+            self.status_label.configure(text="Остановлено · можно повторить", text_color=MUTED)
+            return
         if return_code != 0:
+            self.retry_available = True
             error_log = self.root_dir / "runtime" / "logs" / "ui-last-error.log"
             error_log.parent.mkdir(parents=True, exist_ok=True)
             error_log.write_text(stdout + "\n" + stderr, encoding="utf-8")
-            self.status_label.configure(text="Что-то сломалось · детали сохранены в runtime/logs", text_color=DANGER)
+            self.run_button.configure(text="ПОВТОРИТЬ")
+            self.status_label.configure(text="Что-то сломалось · можно повторить", text_color=DANGER)
             messagebox.showerror(
                 "Обработка не завершилась",
                 "Подробности сохранены в runtime\\logs\\ui-last-error.log.",
@@ -442,6 +530,8 @@ class PortraitApp(ctk.CTk):
             )
             return
 
+        self.retry_available = False
+        self.progress.set(1)
         folders = sorted((path for path in self.output_dir.iterdir() if path.is_dir()), key=lambda path: path.stat().st_mtime)
         latest = folders[-1] if folders else None
         self.latest_output = latest
@@ -476,6 +566,18 @@ class PortraitApp(ctk.CTk):
                 pass
             self.preview_mode.set("Результат")
             self.show_preview()
+
+    def _processing_progress(self, line: str) -> None:
+        progress = parse_progress_line(line)
+        if progress is None:
+            return
+        current, total, name = progress
+        self.progress.set((current - 1) / total)
+        suffix = f" · {name}" if name else ""
+        self.status_label.configure(
+            text=f"Обрабатывается · {current}/{total}{suffix}",
+            text_color=MINT,
+        )
 
     def open_latest_output(self) -> None:
         latest = getattr(self, "latest_output", None)

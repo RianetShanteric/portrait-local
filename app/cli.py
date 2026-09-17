@@ -24,6 +24,12 @@ import numpy as np
 from PIL import Image, ImageOps
 from core.recipe import model_identity_from_manifest, sha256_file, write_recipe
 from pipeline.smart import SmartPhotoPipeline
+from app.workflow import (
+    CANCELLED_RETURN_CODE,
+    CancellationRequested,
+    cancellation_requested,
+    raise_if_cancelled,
+)
 
 
 class PipelineError(RuntimeError):
@@ -110,7 +116,9 @@ def run_realesrgan(
     tile: int,
     with_face_restore: bool,
     outscale: int = 1,
+    cancel_file: Path | None = None,
 ) -> Path:
+    raise_if_cancelled(cancel_file)
     output_dir.mkdir(parents=True, exist_ok=True)
     command = [
         str(python),
@@ -136,8 +144,28 @@ def run_realesrgan(
         command.append("--face_enhance")
 
     print("  AI: " + ("face restoration" if with_face_restore else "denoise/detail"))
-    result = subprocess.run(command, cwd=repo, text=True)
-    if result.returncode != 0:
+    process = subprocess.Popen(command, cwd=repo)
+    while True:
+        try:
+            return_code = process.wait(timeout=0.25)
+            break
+        except subprocess.TimeoutExpired:
+            if not cancellation_requested(cancel_file):
+                continue
+            try:
+                process.terminate()
+            except OSError:
+                pass
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait()
+            raise CancellationRequested("Обработка остановлена пользователем.")
+
+    if cancellation_requested(cancel_file):
+        raise CancellationRequested("Обработка остановлена пользователем.")
+    if return_code != 0:
         raise PipelineError("Real-ESRGAN/GFPGAN вернул ошибку.")
     expected = output_dir / f"{source.stem}_{suffix}.png"
     if expected.is_file():
@@ -239,6 +267,30 @@ def unique_output_path(output_dir: Path, source: Path, suffix: str) -> Path:
     return candidate
 
 
+def cancellation_records(
+    inputs: list[Path], current_index: int, note: str
+) -> list[dict[str, str]]:
+    """Describe the current and remaining inputs after cooperative cancellation."""
+    records = [
+        {
+            "input": inputs[current_index].name,
+            "output": "",
+            "status": "CANCELLED",
+            "note": note,
+        }
+    ]
+    records.extend(
+        {
+            "input": source.name,
+            "output": "",
+            "status": "CANCELLED",
+            "note": "Not started because processing was cancelled.",
+        }
+        for source in inputs[current_index + 1 :]
+    )
+    return records
+
+
 def append_log(log: list[str], message: str) -> None:
     timestamp = dt.datetime.now().strftime("%H:%M:%S")
     log.append(f"[{timestamp}] {message}")
@@ -249,8 +301,14 @@ def main() -> int:
     parser.add_argument("--root", type=Path, required=True, help="Pipeline directory")
     parser.add_argument("--profile", choices=("natural", "balanced", "strong"), default="balanced")
     parser.add_argument("--debug", action="store_true", help="Keep masks and analysis under work/debug_*")
+    parser.add_argument(
+        "--cancel-file",
+        type=Path,
+        help="Stop cooperatively when this local marker file appears",
+    )
     args = parser.parse_args()
     root = args.root.resolve()
+    cancel_file = args.cancel_file.resolve() if args.cancel_file else None
     config_path = root / "config.json"
     if not config_path.is_file():
         print("Нет config.json.", file=sys.stderr)
@@ -272,8 +330,12 @@ def main() -> int:
         return 2
 
     try:
+        raise_if_cancelled(cancel_file)
         python, repo, face_model = runtime_paths(root)
         engine = SmartPhotoPipeline(root, config)
+    except CancellationRequested as error:
+        print(str(error), file=sys.stderr)
+        return CANCELLED_RETURN_CODE
     except PipelineError as error:
         print(str(error), file=sys.stderr)
         return 2
@@ -290,15 +352,19 @@ def main() -> int:
     log: list[str] = []
     records: list[dict[str, str]] = []
     failures = 0
+    cancelled = False
     print(f"Найдено фото: {len(inputs)}. Вывод: {output_dir}")
     append_log(log, f"Run started; {len(inputs)} input file(s).")
 
     for index, source in enumerate(inputs, start=1):
         try:
+            raise_if_cancelled(cancel_file)
             print(f"\n[{index}/{len(inputs)}] {source.name}")
             original = load_rgb(source)
             analysis = engine.analyze(original)
+            raise_if_cancelled(cancel_file)
             final, decisions = engine.render(original, analysis, args.profile)
+            raise_if_cancelled(cancel_file)
             metrics = analysis.metrics
             print(
                 f"  scene={metrics['scene']} confidence={metrics['scene_confidence']:.2f} "
@@ -317,8 +383,10 @@ def main() -> int:
                     int(config["upscale"]["tile"]),
                     False,
                     outscale=2,
+                    cancel_file=cancel_file,
                 )
                 final = load_rgb(upscaled_path)
+                raise_if_cancelled(cancel_file)
             if debug_dir is not None:
                 engine.save_debug(
                     debug_dir,
@@ -328,6 +396,7 @@ def main() -> int:
                     decisions,
                 )
 
+            raise_if_cancelled(cancel_file)
             destination = unique_output_path(
                 output_dir, source, config["output"]["suffix"]
             )
@@ -372,6 +441,14 @@ def main() -> int:
             )
             records.append({"input": source.name, "output": destination.name, "status": "OK", "note": note})
             append_log(log, f"OK {source.name} -> {destination.name}; {note}")
+        except CancellationRequested as error:
+            cancelled = True
+            cancelled_batch = cancellation_records(inputs, index - 1, str(error))
+            records.extend(cancelled_batch)
+            append_log(log, f"CANCELLED {cancelled_batch[0]['input']}: {error}")
+            for record in cancelled_batch[1:]:
+                append_log(log, f"CANCELLED {record['input']}: not started")
+            break
         except Exception as error:  # Leave the remaining photographs processing.
             failures += 1
             records.append({"input": source.name, "output": "", "status": "ERROR", "note": str(error)})
@@ -379,9 +456,11 @@ def main() -> int:
             print(f"  ERROR: {error}", file=sys.stderr)
             traceback.print_exc()
 
-    keep_work = bool(config["output"]["keep_work_files"]) or failures > 0
+    keep_work = bool(config["output"]["keep_work_files"]) or failures > 0 or cancelled
     if failures:
         append_log(log, f"Temporary files retained at {run_dir} because at least one image failed.")
+    if cancelled:
+        append_log(log, f"Run cancelled; temporary files retained at {run_dir}.")
     with (output_dir / "processing_log.txt").open("w", encoding="utf-8", newline="\n") as file:
         file.write("\n".join(log) + "\n")
     with (output_dir / "processing_log.csv").open("w", encoding="utf-8", newline="") as file:
@@ -392,6 +471,10 @@ def main() -> int:
     if not keep_work:
         shutil.rmtree(run_dir)
 
+    if cancelled:
+        completed = sum(record["status"] == "OK" for record in records)
+        print(f"\nОстановлено: {completed}/{len(inputs)} фото. Временные файлы сохранены в {run_dir}.")
+        return CANCELLED_RETURN_CODE
     if failures:
         print(f"\nГотово с ошибками: {len(inputs) - failures}/{len(inputs)}. Временные файлы сохранены в {run_dir}.")
         return 1
