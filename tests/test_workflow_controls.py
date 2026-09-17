@@ -332,6 +332,42 @@ def test_realesrgan_startup_failure_is_not_reported_as_success(
         )
 
 
+def test_realesrgan_child_hides_console_on_windows(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    captured_kwargs: dict[str, object] = {}
+    output_dir = tmp_path / "output"
+    output_dir.mkdir()
+    expected = output_dir / "source_upscaled.png"
+    expected.write_bytes(b"result")
+
+    class SuccessfulProcess:
+        def wait(self, timeout: float | None = None) -> int:
+            return 0
+
+    def capture_popen(*args: object, **kwargs: object) -> SuccessfulProcess:
+        captured_kwargs.update(kwargs)
+        return SuccessfulProcess()
+
+    monkeypatch.setattr(cli.subprocess, "Popen", capture_popen)
+
+    result = cli.run_realesrgan(
+        tmp_path / "python.exe",
+        tmp_path / "Real-ESRGAN",
+        tmp_path / "source.png",
+        output_dir,
+        "upscaled",
+        0,
+        False,
+    )
+
+    expected_flags = (
+        getattr(cli.subprocess, "CREATE_NO_WINDOW", 0) if sys.platform == "win32" else 0
+    )
+    assert result == expected
+    assert captured_kwargs["creationflags"] == expected_flags
+
+
 def test_realesrgan_nonzero_exit_remains_a_processing_failure(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

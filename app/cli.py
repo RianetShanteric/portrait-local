@@ -144,7 +144,8 @@ def run_realesrgan(
         command.append("--face_enhance")
 
     print("  AI: " + ("face restoration" if with_face_restore else "denoise/detail"))
-    process = subprocess.Popen(command, cwd=repo)
+    creationflags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
+    process = subprocess.Popen(command, cwd=repo, creationflags=creationflags)
     while True:
         try:
             return_code = process.wait(timeout=0.25)
